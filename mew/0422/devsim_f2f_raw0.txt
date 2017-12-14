@@ -1,0 +1,98 @@
+
+DevSim enables override of ICD-provided queries.
+- Publically annouced at SIGGRAPH 2017
+
+- Focus on Instance and Physical Devices.
+"simulated device" : GPU/ICD as seen through DevSim
+"actual device" : The GPU as seen by the vendor's ICD
+
+Want last in layer stack, as close to ICD as possible, to ensure consistent layer behavior.
+
+DevSim "simulates" device by adjusting query results.
+- The "simulated device" can return any values (even nonsensical)
+- no emulation: does not add abilities
+- no enforcement: Use Validation layers to enforce.
+- but you can make the query say it does (use w caution)
+- does give some basic limit checking in debug output, but will do what you say.
+
+
+=============================================================================
+So why present DevSim during Portability session?
+
+Portability wants a way to expose the Portability extension for testing,
+without require ICDs to implement.
+
+=============================================================================
+DevSim heavily leverages JSON ecosystem.
+
+Uses JSON schema and generic external validation.
+- reduces DevSim code complexity by depending on schema validation.
+
+JSON philosophy:
+- try to keep as close to Vulkan header datastructures as much as possible.
+- some inevitable divergence for types implied in the headers
+
+JSON-formatted output supported by Sascha @ gpuinfo.org
+Recently added vulkaninfo -j output support
+
+Leverages the JSON ecosystem:
+- uses jsonschema.org
+- external validators for configuration files.
+
+Current core schema is devsim_1_0_0
+- (top-level sections)
+- additional sections are ignored (gpuinfo uses this)
+- 1_1_0 is in development (schema version is separate from Vulkan version).
+ (which extensions were promoted to core?)
+
+Each supported extension has a separate standalone schema.
+- first test case for this approach is VkPortability
+
+
+DevSim sets defaults from the current device, then loads configs on top as deltas.
+Very flexible config files, DevSim can load from:
+- one big config of everything
+- multiple small files with subsets, with individual schemas.
+
+Features in development:
+- configuration of layers and extensions
+        requires Implicit layers (needs pre-instance hooks in loader).
+- update to 1_1_0 schema
+- addition of Portability schema
+
+
+
+
+https://schema.khronos.org/vulkan/devsim_1_0_0.json#
+
+http://json-schema.org/draft-04/schema#
+
+https://www.jsonschemavalidator.net/
+https://jsonschemalint.com/#/version/draft-04/markup/json
+https://json-schema-validator.herokuapp.com/
+
+
+
+
+
+
+https://github.com/KhronosGroup/Vulkan-Portability
+
+https://gitlab.khronos.org/mikew_lunarg/Schemas/tree/mikew_portability
+https://gitlab.khronos.org/mikew_lunarg/Schemas/blob/mikew_portability/samples/portability/sample1.json
+https://gitlab.khronos.org/mikew_lunarg/Schemas/blob/mikew_portability/schema.khronos.org/vulkan/VK_KHR_portability_subset_0_0_0.json
+
+http://json-schema.org/
+
+
+
+VkPhysicalDeviceProperties
+VkPhysicalDeviceFeatures
+VkPhysicalDeviceMemoryProperties
+ArrayOfVkQueueFamilyProperties
+ArrayOfVkFormatProperties
+
+
+https://github.com/LunarG/VulkanTools/blob/master/layersvt/device_simulation.md
+
+
