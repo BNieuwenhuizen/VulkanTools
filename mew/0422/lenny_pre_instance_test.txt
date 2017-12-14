@@ -1,0 +1,88 @@
+commit 78fb2589efb0bbae15c65b23d8df94927416ad06
+Author: Lenny Komow <lenny@lunarg.com>
+Date:   Tue Dec 19 16:22:34 2017 -0700
+
+    TEST: Create pre-instance intercept test case
+    
+    This commit should NOT be merged into master as it screws up core
+    validation. It is useful for testing purposes, to test the pre-
+    instance layer functionality.
+    
+    Change-Id: Id4e078aac4289a4b951da0cb85b20306c7007597
+
+diff --git a/layers/core_validation.cpp b/layers/core_validation.cpp
+index 42f656e..731c2d7 100644
+--- a/layers/core_validation.cpp
++++ b/layers/core_validation.cpp
+@@ -11424,3 +11424,37 @@ VK_LAYER_EXPORT VKAPI_ATTR VkResult VKAPI_CALL vkNegotiateLoaderLayerInterfaceVe
+ 
+     return VK_SUCCESS;
+ }
++
++extern "C" VK_LAYER_EXPORT VKAPI_ATTR VkResult VKAPI_CALL test_EnumerateInstanceExtensionProperties(VkEnumerateInstanceExtensionPropertiesChain *pChain,
++    const char *pLayerName, uint32_t *pPropertyCount, VkExtensionProperties *pProperties) {
++
++    printf("Hit test_EnumerateInstanceExtensionProperties with:\n");
++    printf("\tpLayerName: %s\n", pLayerName);
++    printf("\tpPropertyCount: %d\n", pPropertyCount ? *pPropertyCount : 0);
++    printf("\tpProperties: %p\n", pProperties);
++
++    VkResult res = pChain->CallDown(pLayerName, pPropertyCount, pProperties);
++
++    printf("Returned from test_EnumerateInstanceExtensionProperties with:\n");
++    printf("\tpLayerName: %s\n", pLayerName);
++    printf("\tpPropertyCount: %d\n", pPropertyCount ? *pPropertyCount : 0);
++    printf("\tpProperties: %p\n\n", pProperties);
++
++    return res;
++}
++
++extern "C" VK_LAYER_EXPORT VKAPI_ATTR VkResult VKAPI_CALL test_EnumerateInstanceLayerProperties(VkEnumerateInstanceLayerPropertiesChain *pChain,
++    uint32_t *pPropertyCount, VkLayerProperties *pProperties) {
++
++    printf("Hit test_EnumerateInstanceLayerProperties with:\n");
++    printf("\tpPropertyCount: %d\n", pPropertyCount ? *pPropertyCount : 0);
++    printf("\tpProperties: %p\n", pProperties);
++
++    VkResult res = pChain->CallDown(pPropertyCount, pProperties);
++
++    printf("Returned from test_EnumerateInstanceLayerProperties with:\n");
++    printf("\tpPropertyCount: %d\n", pPropertyCount ? *pPropertyCount : 0);
++    printf("\tpProperties: %p\n\n", pProperties);
++
++    return res;
++}
+diff --git a/layers/linux/VkLayer_core_validation.json b/layers/linux/VkLayer_core_validation.json
+index 0390d82..06b09d2 100644
+--- a/layers/linux/VkLayer_core_validation.json
++++ b/layers/linux/VkLayer_core_validation.json
+@@ -1,7 +1,7 @@
+ {
+-    "file_format_version" : "1.1.0",
++    "file_format_version" : "1.1.2",
+     "layer" : {
+-        "name": "VK_LAYER_LUNARG_core_validation",
++        "name": "VK_LAYER_LUNARG_test_core_validation",
+         "type": "GLOBAL",
+         "library_path": "./libVkLayer_core_validation.so",
+         "api_version": "1.0.66",
+@@ -33,11 +33,13 @@
+                          "vkMergeValidationCachesEXT"
+                         ]
+              }
+-         ]
++        ],
++        "pre_instance_functions": {
++            "vkEnumerateInstanceExtensionProperties": "test_EnumerateInstanceExtensionProperties",
++            "vkEnumerateInstanceLayerProperties": "test_EnumerateInstanceLayerProperties"
++        },
++        "disable_environment": {
++            "DISABLE_TEST_CORE_VALIDATION": ""
++        }
+     }
+ }
+-
+-
+-
+-
+-

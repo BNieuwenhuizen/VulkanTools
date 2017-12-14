@@ -1,0 +1,11 @@
+
+./submodules/Vulkan-LoaderAndValidationLayers/libs/vkjson/vkjson_instance.cc:102:  result = vkEnumerateInstanceLayerProperties(&count, nullptr);
+./submodules/Vulkan-LoaderAndValidationLayers/libs/vkjson/vkjson_instance.cc:107:    result = vkEnumerateInstanceLayerProperties(&count, layers.data());
+
+./submodules/Vulkan-LoaderAndValidationLayers/demos/vulkaninfo.c:582:        err = vkEnumerateInstanceLayerProperties(&count, NULL);
+./submodules/Vulkan-LoaderAndValidationLayers/demos/vulkaninfo.c:597:        err = vkEnumerateInstanceLayerProperties(&count, global_layer_properties);
+
+./layersvt/windows/VkLayer_device_simulation_IMPLICIT.json:14:            "vkEnumerateInstanceLayerProperties": "devsimEnumerateInstanceLayerProperties"
+./layersvt/linux/VkLayer_device_simulation_IMPLICIT.json:14:            "vkEnumerateInstanceLayerProperties": "devsimEnumerateInstanceLayerProperties"
+./layersvt/VkLayer_device_simulation.def:27:vkEnumerateInstanceLayerProperties
+

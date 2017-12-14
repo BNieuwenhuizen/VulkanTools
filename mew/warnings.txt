@@ -1,0 +1,26 @@
+
+/home/mikew/gits/github.com/LunarG/VulkanTools/submodules/Vulkan-LoaderAndValidationLayers/external/glslang/glslang/MachineIndependent/attribute.cpp: In member function ‘const glslang::TConstUnion* glslang::TAttributeArgs::getConstUnion(glslang::TBasicType, int) const’:
+/home/mikew/gits/github.com/LunarG/VulkanTools/submodules/Vulkan-LoaderAndValidationLayers/external/glslang/glslang/MachineIndependent/attribute.cpp:85:16: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+     if (argNum >= args->getSequence().size())
+                ^
+
+/home/mikew/gits/github.com/LunarG/VulkanTools/submodules/Vulkan-LoaderAndValidationLayers/external/glslang/SPIRV/SpvBuilder.cpp: In member function ‘void spv::Builder::remapDynamicSwizzle()’:
+/home/mikew/gits/github.com/LunarG/VulkanTools/submodules/Vulkan-LoaderAndValidationLayers/external/glslang/SPIRV/SpvBuilder.cpp:2533:27: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+         for (int c = 0; c < accessChain.swizzle.size(); ++c)
+                           ^
+
+/home/mikew/gits/github.com/LunarG/VulkanTools/submodules/Vulkan-LoaderAndValidationLayers/external/glslang/StandAlone/StandAlone.cpp: In function ‘void CompileShaders(glslang::TWorklist&)’:
+/home/mikew/gits/github.com/LunarG/VulkanTools/submodules/Vulkan-LoaderAndValidationLayers/external/glslang/StandAlone/StandAlone.cpp:718:25: warning: ‘workItem’ may be used uninitialized in this function [-Wmaybe-uninitialized]
+     glslang::TWorkItem* workItem;
+                         ^
+
+/home/mikew/gits/github.com/LunarG/VulkanTools/submodules/Vulkan-LoaderAndValidationLayers/loader/debug_utils.c: In function ‘util_DebugReportMessage’:
+/home/mikew/gits/github.com/LunarG/VulkanTools/submodules/Vulkan-LoaderAndValidationLayers/loader/debug_utils.c:523:70: warning: ‘severity’ may be used uninitialized in this function [-Wmaybe-uninitialized]
+         if (pTrav->is_messenger && (pTrav->messenger.messageSeverity & severity) && (pTrav->messenger.messageType & types)) {
+                                                                      ^
+
+/home/mikew/gits/github.com/LunarG/VulkanTools/submodules/Vulkan-LoaderAndValidationLayers/demos/vulkaninfo.c: In function ‘AppGpuInit’:
+/home/mikew/gits/github.com/LunarG/VulkanTools/submodules/Vulkan-LoaderAndValidationLayers/demos/vulkaninfo.c:975:35: warning: unused variable ‘place’ [-Wunused-variable]
+         struct VkStructureHeader *place = (struct VkStructureHeader *)&gpu->features2;
+                                   ^
+
