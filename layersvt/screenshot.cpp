@@ -1087,9 +1087,25 @@ VKAPI_ATTR VkResult VKAPI_CALL CreateCommandPool(VkDevice device, const VkComman
         return result;
     }
 
-    // Create a mapping from a device to a commandPool
-    devMap->commandPools.push_front(*pCommandPool);
-    loader_platform_thread_unlock_mutex(&globalLock);
+    uint32_t count;
+    bool graphicsCapable;
+    VkLayerInstanceDispatchTable *pInstanceTable = instance_dispatch_table(physDeviceMap[devMap->physicalDevice]->instance);
+    pInstanceTable->GetPhysicalDeviceQueueFamilyProperties(devMap->physicalDevice, &count, NULL);
+
+    VkQueueFamilyProperties *queueProps = (VkQueueFamilyProperties *)malloc(count * sizeof(VkQueueFamilyProperties));
+    if (queueProps) {
+        pInstanceTable->GetPhysicalDeviceQueueFamilyProperties(devMap->physicalDevice, &count, queueProps);
+        graphicsCapable = ((queueProps[pCreateInfo->queueFamilyIndex].queueFlags & VK_QUEUE_GRAPHICS_BIT) != 0);
+        free(queueProps);
+    } else {
+        graphicsCapable = true;
+    }
+
+    if (graphicsCapable) {
+        // Create a mapping from a device to a commandPool
+        devMap->commandPools.push_front(*pCommandPool);
+        loader_platform_thread_unlock_mutex(&globalLock);
+    }
     return result;
 }
 
